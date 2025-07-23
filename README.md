@@ -1,7 +1,6 @@
 # SETTUP AND CREATING AN API CLIENT-SERVER HL7-FHIR STU3 v3.0.1 IN WINDOWS Part2
 
-For this second part of the project the characterics of FHIR to be explored will be ADDING,Deleting and UPDATING
-a patient in a local server.
+For this second part of the project the characterics of FHIR to be explored will be ADD,DELETE and UPDATE.
 
 # NEEDED TOOLS
 
@@ -17,7 +16,7 @@ You don't need the code from the previously repository. It is just needed the so
 
 For running a local server it will be needed to setup and configurate the docker.
 
-First you need to have the docker already installed in your local computer, then it is needed to run certain commands to start the docker and configurate him  to run the fhir application.
+The docker needs to be already installed in your local computer, then it is needed to run certain commands to start the docker and configurate him  to run the fhir application.
 
 ## Setup the Docker
 
@@ -27,7 +26,7 @@ First you need to have the docker already installed in your local computer, then
 
 ### Step 1: Create Required Files and Folders
 
-In PowerShell, run the following commands:
+**In PowerShell, run the following commands:**
 
 ```powershell
 New-Item -Path . -Name "docker-compose.yml" -ItemType "File"
@@ -35,17 +34,15 @@ New-Item -Path . -Name "config" -ItemType "Directory"
 New-Item -Path .\config -Name "hapi.properties" -ItemType "File"
 ```
 
----
-
 ### Step 2: Edit docker-compose.yml
 
-Open the file in VSCode:
+**Open the file in VSCode:**
 
 ```powershell
 code docker-compose.yml
 ```
 
-Paste this content:
+**Paste this content:**
 
 ```yaml
 version: '3.8'
@@ -63,17 +60,15 @@ services:
       - ./config/hapi.properties:/app/WEB-INF/hapi.properties
 ```
 
----
-
 ### Step 3: Edit hapi.properties
 
-Open the config file:
+**Open the config file:**
 
 ```powershell
 code .\config\hapi.properties
 ```
 
-Paste this content:
+**Paste this content:**
 
 ```properties
 hapi.fhir.fhir_version=DSTU3
@@ -84,8 +79,6 @@ hapi.fhir.default_response_encoding=json
 hapi.fhir.allow_external_references=true
 ```
 
----
-
 ### Step 4: Run Docker Compose
 
 From your project root (where docker-compose.yml is):
@@ -93,8 +86,6 @@ From your project root (where docker-compose.yml is):
 ```powershell
 docker-compose up -d
 ```
-
----
 
 ### Step 5: Verify FHIR Server
 
@@ -146,8 +137,8 @@ Then run it with:
 
 # OPERATIONS IN HL7-FHIR PATIENT DATA
 
+("To implement")
 
-s
 ## ADD PATIENT
 
 ## UPDATE PATIENT

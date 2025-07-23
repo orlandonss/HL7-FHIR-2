@@ -22,42 +22,7 @@ namespace Project01
                     PreferredReturn = Prefer.ReturnRepresentation
                 }
             };
-            var parameters = new string[] { "_summary=count" };
-            //condition to search for patients with the name test
-            var parameters2 = new string[] { "name=test" };
-            Bundle patientBundle = client.Search<Patient>(parameters);
-            Bundle patientBundleE = client.Search<Patient>(null);
-            Bundle patientBundleS = client.Search<Patient>(parameters2);
-
-
-            Console.WriteLine($"Total:{patientBundle.Total}");
-            Console.WriteLine($"Entry:{patientBundleE.Entry.Count}\n");
-
-            int entrycount = 1;
-            bool foundPatients = false;
-
-            while (patientBundleS != null && !foundPatients)
-            {
-                foreach (Bundle.EntryComponent entry in patientBundleS.Entry)
-                {
-                    if (entry.Resource is Patient patient)
-                    {
-                        foundPatients = true; // break outer loop after this batch
-
-                        Console.WriteLine($"Entry: {entrycount}\nID: {patient.Id}");
-
-                        if (patient.Name.Count > 0)
-                        {
-                            Console.WriteLine($"Name: {patient.Name[0]}\nUrl: {entry.FullUrl}");
-                        }
-
-                        var encounterBundle = client.Search<Encounter>(new string[] { $"patient=Patient/{patient.Id}" });
-                        Console.WriteLine($"EncountersTotal: {encounterBundle.Total}\n");
-                        entrycount++;
-                    }
-                }
-                patientBundleS = client.Continue(patientBundleS);
+            
             }
         }
     }
-}
