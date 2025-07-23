@@ -5,12 +5,13 @@ a patient in a local server.
 
 # NEEDED TOOLS
 
-For developing this part of the project it will be needed the same software as the previsously project present in the
-repository: https://github.com/orlandonss/HL7-FHIR/tree/main/Projeto01.
+For developing this part of the project it will be needed the same tools as the previsously project present in the repository: https://github.com/orlandonss/HL7-FHIR/tree/main/Projeto01.
 Also, it will be needed a docker to run a local server and perform some operations.
 
 - [**DOCKER**](https://www.docker.com)
 - [**HL7 FHIR  STU3 DOCUMENTATION**](https://hl7.org/fhir/STU3/)
+
+You don't need the code from the previously repository. It is just needed the software tools.
 
 # SETUP A LOCAL SERVER IN HL7-FHIR
 
@@ -21,9 +22,7 @@ First you need to have the docker already installed in your local computer, then
 ## Setup the Docker
 
 - [**DOCKER HAPI IMAGES/CONFIGURATIONS**](https://github.com/hapifhir/hapi-fhir-jpaserver-starter)
-
 - [**HAPI FHIR DOCUMENTATIONS**](https://hapifhir.io/)
-
 - [**HAPI FHIR STARTER DOCKER PROJECT**](https://hub.docker.com/r/hapiproject/hapi) (**PREFERED CONFIGURATION**)
 
 ### Step 1: Create Required Files and Folders
@@ -111,7 +110,6 @@ You should see JSON output including:
 "fhirVersion": "3.0.1"
 ```
 
-
 ## Auto-Start Your FHIR Server on Reboot
 
 ### Option 1: Manually Start It When Needed
@@ -121,7 +119,6 @@ In VSCode terminal:
 ```powershell
 docker start hapi-fhir-stu3
 ```
-
 
 ### Option 2: Auto-Start on System Boot
 
@@ -138,7 +135,7 @@ Create a `start-dev.ps1` script:
 ```powershell
 # start-dev.ps1
 docker start hapi-fhir-stu3
-dotnet run --project .\YourCSharpProject\
+dotnet run --project .\<YourCSharpProject>\
 ```
 
 Then run it with:
@@ -149,6 +146,8 @@ Then run it with:
 
 # OPERATIONS IN HL7-FHIR PATIENT DATA
 
+
+s
 ## ADD PATIENT
 
 ## UPDATE PATIENT
