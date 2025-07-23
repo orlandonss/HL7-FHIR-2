@@ -11,7 +11,7 @@ namespace Project01
             {"PublicHapi","http://hapi.fhir.org/baseDstu3"},
             {"Local","http://localhost:8080/fhir"},
         };
-        private static readonly string fhirServer = fhir_Servers["PublicHapi"];
+        private static readonly string fhirServer = fhir_Servers["Local"];
         static void Main(string[] args)
         {
             FhirClient client = new FhirClient(fhirServer)
