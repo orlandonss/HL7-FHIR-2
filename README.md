@@ -9,7 +9,8 @@ For developing this part of the project it will be needed the same software as t
 repository: https://github.com/orlandonss/HL7-FHIR/tree/main/Projeto01.
 Also, it will be needed a docker to run a local server and perform some operations.
 
-- [Docker](https://www.docker.com)
+- [**DOCKER**](https://www.docker.com)
+- [**HL7 FHIR  STU3 DOCUMENTATION**](https://hl7.org/fhir/STU3/)
 
 # SETUP A LOCAL SERVER IN HL7-FHIR
 
@@ -17,9 +18,15 @@ For running a local server it will be needed to setup and configurate the docker
 
 First you need to have the docker already installed in your local computer, then it is needed to run certain commands to start the docker and configurate him  to run the fhir application.
 
-# Setup HAPI FHIR Server for STU3 (v3.0.1) Using Docker in PowerShell
+## Setup the Docker
 
-## Step 1: Create Required Files and Folders
+- [**DOCKER HAPI IMAGES/CONFIGURATIONS**](https://github.com/hapifhir/hapi-fhir-jpaserver-starter)
+
+- [**HAPI FHIR DOCUMENTATIONS**](https://hapifhir.io/)
+
+- [**HAPI FHIR STARTER DOCKER PROJECT**](https://hub.docker.com/r/hapiproject/hapi) (**PREFERED CONFIGURATION**)
+
+### Step 1: Create Required Files and Folders
 
 In PowerShell, run the following commands:
 
@@ -31,7 +38,7 @@ New-Item -Path .\config -Name "hapi.properties" -ItemType "File"
 
 ---
 
-## Step 2: Edit docker-compose.yml
+### Step 2: Edit docker-compose.yml
 
 Open the file in VSCode:
 
@@ -59,7 +66,7 @@ services:
 
 ---
 
-## Step 3: Edit hapi.properties
+### Step 3: Edit hapi.properties
 
 Open the config file:
 
@@ -80,7 +87,7 @@ hapi.fhir.allow_external_references=true
 
 ---
 
-## Step 4: Run Docker Compose
+### Step 4: Run Docker Compose
 
 From your project root (where docker-compose.yml is):
 
@@ -90,7 +97,7 @@ docker-compose up -d
 
 ---
 
-## Step 5: Verify FHIR Server
+### Step 5: Verify FHIR Server
 
 Open in your browser:
 
@@ -105,6 +112,40 @@ You should see JSON output including:
 ```
 
 
+## Auto-Start Your FHIR Server on Reboot
+
+### Option 1: Manually Start It When Needed
+
+In VSCode terminal:
+
+```powershell
+docker start hapi-fhir-stu3
+```
+
+
+### Option 2: Auto-Start on System Boot
+
+```powershell
+docker update --restart=unless-stopped hapi-fhir-stu3
+```
+
+Now it will start every time Docker starts with your system.
+
+### Option 3: Use a PowerShell Script to Launch Everything
+
+Create a `start-dev.ps1` script:
+
+```powershell
+# start-dev.ps1
+docker start hapi-fhir-stu3
+dotnet run --project .\YourCSharpProject\
+```
+
+Then run it with:
+
+```powershell
+./start-dev.ps1
+```
 
 # OPERATIONS IN HL7-FHIR PATIENT DATA
 
