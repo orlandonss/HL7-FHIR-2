@@ -12,7 +12,12 @@ namespace Project01
             {"Local","http://localhost:8080/fhir"},
         };
         private static readonly string fhirServer = fhir_Servers["Local"];
-        static void Main(string[] args)
+        /// <summary>
+        /// Main entry point for the programm
+        /// </summary>
+        /// <param name="args"></param>
+
+        static int Main(string[] args)
         {
             FhirClient client = new FhirClient(fhirServer)
             {
@@ -22,11 +27,37 @@ namespace Project01
                     PreferredReturn = Prefer.ReturnRepresentation
                 }
             };
-            List<Patient> patients = GetPatients(client);
+            CreatePatient(client, "Santos", "Orlando", 2004, 02, 26);
+            List <Patient> patients = GetPatients(client);
             Console.WriteLine($"Found: {patients.Count} patients!!");
-           
+
+            //delete all the patients in expetion the one we created
+            string firstId = null;
+            foreach (Patient patient in patients)
+            {
+                if (string.IsNullOrEmpty(firstId))
+                {
+                    firstId = patient.Id;
+                    continue;
+                }
+                    DeletPatient(client, patient.Id);
+            }
+
+            Patient firstPatient = ReadPatient(client, firstId);
+            Console.WriteLine($"Read Back Patient: {firstPatient.Name[0].ToString()}");
+
+            return 0;
         }
 
+        /// <summary>
+        /// Get a list of patients matching a specified criteria
+        /// </summary>
+        /// <param name="c"></param>
+        /// <param name="patientCriteria"></param>
+        /// <param name="max"> The maximum number of patients to return (default:20)</param>
+        /// <param name="onlywithEncounters">Flag to only return patient With Enconters(default:false)</param>
+        /// <returns></returns>
+    
         static List<Patient> GetPatients(FhirClient c, string[] patientCriteria = null, int max = 20, bool onlywithEncounters = false)
         {
 
@@ -64,8 +95,8 @@ namespace Project01
                         }
                         patients.Add(patient);
 
-                        Console.WriteLine($"{patients.Count}\n{entry.FullUrl}\n");
-                        Console.WriteLine($"Id: {patient.Id}\n");
+                        Console.WriteLine($"Url:{entry.FullUrl}");
+                        Console.WriteLine($"Id:{patient.Id}");
 
                         if (patient.Name.Count > 0)
                         {
@@ -77,7 +108,6 @@ namespace Project01
                             Console.WriteLine($"Entry Count: {encounterBundle.Entry.Count} Encounter Total: {encounterBundle.Total}");
                         }
                     }
-
                     if (patients.Count >= max)
                     {
                         break;
@@ -91,6 +121,58 @@ namespace Project01
             }
             return patients;
         }
+
+        /// <summary>
+        /// crate a patient with the specified name and birthdate
+        /// </summary>
+        /// <param name="c"></param>
+        /// <param name="FamilyName"></param>
+        /// <param name="GivenName"></param>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <param name="day"></param>
+        static void CreatePatient(FhirClient c, string FamilyName, string GivenName, int year, int month, int day)
+        {
+            Patient toCreate = new Patient()
+            {
+                Name = new List<HumanName>()
+                {
+                  new HumanName(){
+                    Family=FamilyName,
+                    Given=new List<string>(){
+                        GivenName,
+                    },
+                  }
+                },
+                BirthDateElement = new Date(year, month, day),
+            };
+            Patient created = c.Create<Patient>(toCreate);
+            Console.WriteLine($"Created Patient: {created.Id}");
+        }
+        static void DeletPatient(FhirClient c, string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentNullException(nameof(id));
+            }
+            Console.WriteLine($"Deleting Patient: {id}");
+            c.Delete($"Patient/{id}");
+        }
+        /// <summary>
+        /// delete a patient especified by an ID
+        /// </summary>
+        /// <param name="patientsBundle"></param>
+
+
+        static Patient ReadPatient(FhirClient c, string id)
+        {
+           if (string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentNullException(nameof(id));
+            }
+            return c.Read<Patient>($"Patient/{id}");
+        }
+
         public static void countEntries(Bundle patientsBundle)
         {
             Console.WriteLine($"Total Entries: {patientsBundle.Total}");
@@ -99,7 +181,7 @@ namespace Project01
         {
             Console.WriteLine($"Total Patients in Bundle: {patientsBundle.Entry.Count}\n");
         }
-        public static void countPatients(List <Patient> l)
+        public static void countPatients(List<Patient> l)
         {
             Console.WriteLine($"Found: {l.Count} patients!!");
         }
