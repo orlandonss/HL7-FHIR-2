@@ -1,6 +1,5 @@
 ﻿using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
-using System;
 
 namespace Project01
 {
@@ -32,7 +31,7 @@ namespace Project01
             Console.WriteLine($"Found: {patients.Count} patients!!");
 
             //delete all the patients in expetion the one we created
-            string firstId = null;
+            string? firstId = null;
             foreach (Patient patient in patients)
             {
                 if (string.IsNullOrEmpty(firstId))
@@ -46,6 +45,11 @@ namespace Project01
             Patient firstPatient = ReadPatient(client, firstId);
             Console.WriteLine($"Read Back Patient: {firstPatient.Name[0].ToString()}");
 
+            Patient updated = UpdatePatient(client, firstPatient);
+            Patient ReadFinal = ReadPatient(client, firstId);
+            
+
+
             return 0;
         }
 
@@ -58,7 +62,7 @@ namespace Project01
         /// <param name="onlywithEncounters">Flag to only return patient With Enconters(default:false)</param>
         /// <returns></returns>
     
-        static List<Patient> GetPatients(FhirClient c, string[] patientCriteria = null, int max = 20, bool onlywithEncounters = false)
+        static List<Patient> GetPatients(FhirClient c, string[]? patientCriteria = null, int max = 20, bool onlywithEncounters = false)
         {
 
             List<Patient> patients = new List<Patient>();
@@ -131,6 +135,7 @@ namespace Project01
         /// <param name="year"></param>
         /// <param name="month"></param>
         /// <param name="day"></param>
+
         static void CreatePatient(FhirClient c, string FamilyName, string GivenName, int year, int month, int day)
         {
             Patient toCreate = new Patient()
@@ -163,7 +168,6 @@ namespace Project01
         /// </summary>
         /// <param name="patientsBundle"></param>
 
-
         static Patient ReadPatient(FhirClient c, string id)
         {
            if (string.IsNullOrEmpty(id))
@@ -173,6 +177,19 @@ namespace Project01
             return c.Read<Patient>($"Patient/{id}");
         }
 
+        static Patient UpdatePatient(FhirClient c, Patient patient)
+        {
+            patient.Telecom.Add(new ContactPoint()
+            {
+                System = ContactPoint.ContactPointSystem.Phone,
+                Value = "555 555 555",
+                Use = ContactPoint.ContactPointUse.Home,
+            });
+
+            patient.Gender = AdministrativeGender.Unknown;
+            return c.Update<Patient>(patient);
+        }
+      
         public static void countEntries(Bundle patientsBundle)
         {
             Console.WriteLine($"Total Entries: {patientsBundle.Total}");
