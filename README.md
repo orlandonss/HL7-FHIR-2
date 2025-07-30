@@ -1,10 +1,14 @@
 # SETTUP AND CREATING AN API CLIENT-SERVER HL7-FHIR STU3 v3.0.1 IN WINDOWS Part2
 
-For this second part of the project the characterics of FHIR to be explored will be ADD,DELETE and UPDATE.
+For this second part of the project the functionalities of FHIR to be explored will be the operations: 
+
+- ADD,
+- DELETE
+- UPDATE.
 
 # NEEDED TOOLS
 
-For developing this part of the project it will be needed the same tools as the previsously project present in the repository: https://github.com/orlandonss/HL7-FHIR/tree/main/Projeto01.
+For developing this part of the project it will be needed the same tools as the previously project present in the repository: https://github.com/orlandonss/HL7-FHIR/tree/main/Projeto01.
 Also, it will be needed a docker to run a local server and perform some operations.
 
 - [**DOCKER**](https://www.docker.com)
@@ -16,7 +20,7 @@ You don't need the code from the previously repository. It is just needed the so
 
 For running a local server it will be needed to setup and configurate the docker.
 
-The docker needs to be already installed in your local computer, then it is needed to run certain commands to start the docker and configurate him  to run the fhir application.
+The docker needs to be already installed in your local computer, then it is needed to run certain commands to start the docker and configurate him to run the fhir application.
 
 ## Setup the Docker
 
@@ -90,7 +94,6 @@ docker-compose up -d
 ### Step 5: Verify FHIR Server
 
 Open in your browser:
-
 ```
 http://localhost:8080/fhir/metadata
 ```
@@ -137,17 +140,17 @@ Then run it with:
 
 # OPERATIONS IN HL7-FHIR PATIENT DATA
 
-The following functionalitiens implement the operations needed to operate a with a Patient.
+The following functionalities implement the operations needed to operate a with a Patient.
 
 ## COMPLETE OPERATIONS
 
-Here is the total code exploring the operations and funtionalities of FHIR. 
+Here is the total code exploring the operations and functionalities of FHIR implemented. 
 
 ```csharp
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
 
-namespace Project01
+namespace Project02
 {
     public static class FhirProject
     {
@@ -194,8 +197,6 @@ namespace Project01
             Patient updated = UpdatePatient(client, firstPatient);
             Patient ReadFinal = ReadPatient(client, firstId);
             
-
-
             return 0;
         }
 
@@ -353,7 +354,8 @@ namespace Project01
 ```
 
 ## ADD PATIENT
-Adding a Patient and manipulating the data.
+
+The following code adds a patient to the Server.
 
 ```csharp
 static void CreatePatient(FhirClient c, string FamilyName, string GivenName, int year, int month, int day)
@@ -378,7 +380,8 @@ static void CreatePatient(FhirClient c, string FamilyName, string GivenName, int
 }
 ```
 ## DELETE PATIENT
-The following function deltes a patient present in the local server.
+
+The following code deletes a patient present in the local server.
 
 ```csharp
 static void DeletPatient(FhirClient c, string id)
@@ -393,6 +396,7 @@ static void DeletPatient(FhirClient c, string id)
 ```
 
 ## UPDATE PATIENT
+The following code adds information to a certain patient that already exists.
 
 ```csharp
 
@@ -408,11 +412,9 @@ static void DeletPatient(FhirClient c, string id)
   return c.Update<Patient>(patient);
 }
 
-
-
 ```
 ## READ PATIENT
-Listing the Patient info Id.
+The following code lists the patients in the local server.
 
 ```csharp
 static Patient ReadPatient(FhirClient c, string id)
